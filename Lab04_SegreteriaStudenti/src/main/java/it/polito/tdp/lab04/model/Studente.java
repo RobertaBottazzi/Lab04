@@ -44,6 +44,11 @@ public class Studente {
 	public void setCds(String cds) {
 		this.cds = cds;
 	}
+
+	@Override
+	public String toString() {
+		return matricola.toString()+" "+cognome+" "+nome+" "+cds+"\n";
+	}
 	
 	
 

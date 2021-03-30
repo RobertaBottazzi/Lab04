@@ -5,8 +5,11 @@
 package it.polito.tdp.lab04;
 
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.ResourceBundle;
 
+import it.polito.tdp.lab04.model.Corso;
 import it.polito.tdp.lab04.model.Model;
 import it.polito.tdp.lab04.model.Studente;
 import javafx.event.ActionEvent;
@@ -51,7 +54,18 @@ public class FXMLController {
 
     @FXML
     void doCercaIscrittiCorso(ActionEvent event) {
-
+    	List<Studente> studentiIscrittiAlCorso= new ArrayList<>();
+    	Corso corso= null;
+    	if(this.ComboBox.getValue().equals(""))
+    		this.txtRisultato.setText("Seleziona un corso");
+    	for(Corso c: this.model.getTuttiICorsi()) {
+    		if(this.ComboBox.getValue().equals(c.getNome()))
+    			corso=c;    			
+    	}
+    	studentiIscrittiAlCorso.addAll(this.model.getStudentiIscrittiAlCorso(corso));
+    	for(Studente s: studentiIscrittiAlCorso) {
+    		this.txtRisultato.appendText(s.toString());
+    	}
     }
 
     @FXML

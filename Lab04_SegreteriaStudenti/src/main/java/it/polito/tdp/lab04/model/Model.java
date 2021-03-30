@@ -32,7 +32,11 @@ public class Model {
 		}
 		return corsiPerNome;
 	}
+	
 	public List<Studente> getTuttiGliStudenti(){
 		return studenteDao.getTuttiGliStudenti();
+	}
+	public List<Studente> getStudentiIscrittiAlCorso(Corso corso){
+		return corsoDao.getStudentiIscrittiAlCorso(corso);
 	}
 }

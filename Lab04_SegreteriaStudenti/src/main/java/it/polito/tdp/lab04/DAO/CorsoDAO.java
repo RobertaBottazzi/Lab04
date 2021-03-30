@@ -55,17 +55,35 @@ public class CorsoDAO {
 	
 	
 	/*
-	 * Dato un codice insegnamento, ottengo il corso
+	 * Suggerimento prof:Dato un codice insegnamento, ottengo il corso
+	 * Mia versione:Dato un corso ottengo il nome
 	 */
 	public void getCorso(Corso corso) {
-		// TODO
 	}
 
 	/*
 	 * Ottengo tutti gli studenti iscritti al Corso
 	 */
-	public void getStudentiIscrittiAlCorso(Corso corso) {
-		// TODO
+	public List<Studente> getStudentiIscrittiAlCorso(Corso corso) {
+		final String sql="SELECT DISTINCT s.matricola, s.cognome,s.nome,s.CDS "
+				+ "FROM iscrizione i, studente s "
+				+ "WHERE s.matricola=i.matricola AND i.codins=? ";
+		List<Studente> studenti= new ArrayList<>();
+		try {
+			Connection conn= ConnectDB.getConnection();
+			PreparedStatement st= conn.prepareStatement(sql);
+			st.setString(1, corso.getCodins());
+			ResultSet rs=st.executeQuery();
+			while(rs.next()) {
+				Studente studente= new Studente(rs.getInt("matricola"), rs.getString("cognome"),rs.getString("nome"),rs.getString("CDS"));
+				studenti.add(studente);
+			}
+			conn.close();
+			return studenti;
+			
+		} catch (SQLException e) {
+			throw new RuntimeException("Errore Db", e);
+		}
 	}
 
 	/*

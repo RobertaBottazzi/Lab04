@@ -7,8 +7,8 @@ package it.polito.tdp.lab04;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-import it.polito.tdp.lab04.model.Corso;
 import it.polito.tdp.lab04.model.Model;
+import it.polito.tdp.lab04.model.Studente;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -31,6 +31,12 @@ public class FXMLController {
 
     @FXML
     private TextField txtMatricola;
+    
+    @FXML
+    private TextField txtNome;
+
+    @FXML
+    private TextField txtCognome;
 
     @FXML
     private Button greenBtn;
@@ -50,7 +56,13 @@ public class FXMLController {
 
     @FXML
     void doGreenButton(ActionEvent event) {
-
+    	String matricola= this.txtMatricola.getText();
+    	for(Studente s: model.getTuttiGliStudenti()) {
+    		if(s.getMatricola()==(Integer.parseInt(matricola))) {
+    			this.txtCognome.setText(s.getCognome());
+    			this.txtNome.setText(s.getNome());
+    		}
+    	}
     }
 
     @FXML
@@ -77,6 +89,8 @@ public class FXMLController {
         assert ComboBox != null : "fx:id=\"ComboBox\" was not injected: check your FXML file 'Scene.fxml'.";
         assert txtMatricola != null : "fx:id=\"txtMatricola\" was not injected: check your FXML file 'Scene.fxml'.";
         assert greenBtn != null : "fx:id=\"greenBtn\" was not injected: check your FXML file 'Scene.fxml'.";
+        assert txtNome != null : "fx:id=\"txtNome\" was not injected: check your FXML file 'Scene.fxml'.";
+        assert txtCognome != null : "fx:id=\"txtCognome\" was not injected: check your FXML file 'Scene.fxml'.";
         assert txtRisultato != null : "fx:id=\"txtRisultato\" was not injected: check your FXML file 'Scene.fxml'.";
 
     }

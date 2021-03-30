@@ -4,12 +4,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 import it.polito.tdp.lab04.DAO.CorsoDAO;
+import it.polito.tdp.lab04.DAO.StudenteDAO;
 
 public class Model {
 	private CorsoDAO corsoDao;
-	
+	private StudenteDAO studenteDao;	
 	public Model() {
 		corsoDao= new CorsoDAO();
+		studenteDao= new StudenteDAO();
 	}
 	/**
 	 * restituisce tutti i corsi in una lista di corsi
@@ -29,5 +31,8 @@ public class Model {
 			corsiPerNome.add(c.getNome());			
 		}
 		return corsiPerNome;
+	}
+	public List<Studente> getTuttiGliStudenti(){
+		return studenteDao.getTuttiGliStudenti();
 	}
 }

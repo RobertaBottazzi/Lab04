@@ -60,12 +60,12 @@
                         <Insets left="10.0" />
                      </HBox.margin>
                   </Button>
-                  <TextField editable="false">
+                  <TextField fx:id="txtNome" editable="false">
                      <HBox.margin>
                         <Insets left="10.0" />
                      </HBox.margin>
                   </TextField>
-                  <TextField accessibleRoleDescription="ed" editable="false">
+                  <TextField fx:id="txtCognome" accessibleRoleDescription="ed" editable="false">
                      <HBox.margin>
                         <Insets left="10.0" />
                      </HBox.margin>

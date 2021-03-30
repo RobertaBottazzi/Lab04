@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -19,7 +20,7 @@ public class CorsoDAO {
 
 		final String sql = "SELECT * FROM corso";
 
-		List<Corso> corsi = new LinkedList<Corso>();
+		List<Corso> corsi = new ArrayList<Corso>();
 
 		try {
 			Connection conn = ConnectDB.getConnection();
@@ -34,8 +35,9 @@ public class CorsoDAO {
 				String nome = rs.getString("nome");
 				int periodoDidattico = rs.getInt("pd");
 
-				System.out.println(codins + " " + numeroCrediti + " " + nome + " " + periodoDidattico);
-
+				//System.out.println(codins + " " + numeroCrediti + " " + nome + " " + periodoDidattico);
+				Corso corso= new Corso(codins,numeroCrediti,nome,periodoDidattico);
+				corsi.add(corso);
 				// Crea un nuovo JAVA Bean Corso
 				// Aggiungi il nuovo oggetto Corso alla lista corsi
 			}

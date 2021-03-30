@@ -55,10 +55,15 @@ public class CorsoDAO {
 	
 	
 	/*
-	 * Suggerimento prof:Dato un codice insegnamento, ottengo il corso
-	 * Mia versione:Dato un corso ottengo il nome
+	 *Dato un codice insegnamento, ottengo il corso
 	 */
-	public void getCorso(Corso corso) {
+	public Corso getCorso(String codice) {
+		Corso corso = null;
+		for(Corso c: this.getTuttiICorsi()) {
+			if(c.getCodins().equals(codice))
+				corso=c;
+		}
+		return corso;
 	}
 
 	/*

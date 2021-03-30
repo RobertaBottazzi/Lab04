@@ -36,7 +36,25 @@ public class Model {
 	public List<Studente> getTuttiGliStudenti(){
 		return studenteDao.getTuttiGliStudenti();
 	}
+	
 	public List<Studente> getStudentiIscrittiAlCorso(Corso corso){
 		return corsoDao.getStudentiIscrittiAlCorso(corso);
+	}
+	
+	public List<Corso> getCorsiIscrittoStudente(Studente studente){
+		List<Corso> corsi= new ArrayList<>();
+		for(String s: studenteDao.getCorsiIscrittoStudente(studente)) {
+			corsi.add(corsoDao.getCorso(s));
+		}
+		return corsi;
+	}
+	
+	public Studente getStudente(int matricola) {
+		Studente studente=null;
+		for(Studente s: studenteDao.getTuttiGliStudenti()) {
+			if(s.getMatricola()==matricola)
+				studente=s;
+		}
+		return studente;
 	}
 }

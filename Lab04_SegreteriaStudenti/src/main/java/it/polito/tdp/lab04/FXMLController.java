@@ -49,15 +49,29 @@ public class FXMLController {
 
     @FXML
     void doCercaCorsi(ActionEvent event) {
-
+    	int matricola=Integer.parseInt(this.txtMatricola.getText());
+    	Studente studente=this.model.getStudente(matricola);
+    	List<Corso> corsi= new ArrayList<>();
+    	if(studente!=null)
+    		corsi.addAll(this.model.getCorsiIscrittoStudente(studente));  
+    	else {
+    		this.txtRisultato.setText("Studente non presente nel database");
+    		return;
+    	}
+    	for(Corso c: corsi) {
+    		this.txtRisultato.appendText(c.toString());
+    	}
     }
 
     @FXML
     void doCercaIscrittiCorso(ActionEvent event) {
     	List<Studente> studentiIscrittiAlCorso= new ArrayList<>();
     	Corso corso= null;
-    	if(this.ComboBox.getValue().equals(""))
+    	if(this.ComboBox.getValue().equals("")) {
     		this.txtRisultato.setText("Seleziona un corso");
+    		return;
+    	}
+    		
     	for(Corso c: this.model.getTuttiICorsi()) {
     		if(this.ComboBox.getValue().equals(c.getNome()))
     			corso=c;    			
@@ -89,6 +103,10 @@ public class FXMLController {
      */
     @FXML
     void doReset(ActionEvent event) {
+    	this.txtRisultato.clear();
+    	this.txtMatricola.clear();
+    	this.txtCognome.clear();
+    	this.txtNome.clear();
 
     }
     

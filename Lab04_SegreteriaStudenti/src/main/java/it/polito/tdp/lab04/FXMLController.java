@@ -49,17 +49,17 @@ public class FXMLController {
 
     @FXML
     void doCercaCorsi(ActionEvent event) {
-    	int matricola;
+    	int matricola = 0;
     	Studente studente = null;
     	List<Corso> corsi = null;
     	try{
     		matricola=Integer.parseInt(this.txtMatricola.getText());
-    		studente=this.model.getStudente(matricola);
-    		corsi= new ArrayList<>();
     	} catch (NumberFormatException e) {
-    		this.txtRisultato.setText("Selezionare uno studente valido"); //CONTROLLARE
+    		this.txtRisultato.setText("Scrivere una matricola valida");
+    		return;
     	}
-    	
+    	studente=this.model.getStudente(matricola);
+		corsi= new ArrayList<>();			
     	if(studente!=null)
     		corsi.addAll(this.model.getCorsiIscrittoStudente(studente));    		
     	else {
@@ -110,13 +110,21 @@ public class FXMLController {
 
     @FXML
     void doGreenButton(ActionEvent event) {
-    	String matricola= this.txtMatricola.getText();
-    	for(Studente s: model.getTuttiGliStudenti()) {
-    		if(s.getMatricola()==(Integer.parseInt(matricola))) {
-    			this.txtCognome.setText(s.getCognome());
-    			this.txtNome.setText(s.getNome());
-    		}
+    	try {
+    		String matricola= this.txtMatricola.getText();
+        	for(Studente s: model.getTuttiGliStudenti()) {
+        		if(s.getMatricola()==(Integer.parseInt(matricola))) {
+        			this.txtCognome.setText(s.getCognome());
+        			this.txtNome.setText(s.getNome());
+        		}
+        	}
+        	if(this.txtCognome.getText().isBlank() && this.txtNome.getText().isBlank())
+        		this.txtRisultato.setText("Studente non presente nel database");
+    	} catch (NumberFormatException e) {
+    		this.txtRisultato.setText("Scrivere una matricola valida");
+    		return;    		
     	}
+    	
     }
 
     @FXML
@@ -125,11 +133,12 @@ public class FXMLController {
     	try{
     		studente=this.model.getStudente(Integer.parseInt(this.txtMatricola.getText()));    		
     	} catch (NumberFormatException e) {
-    		this.txtRisultato.setText("Selezionare uno studente valido");
+    		this.txtRisultato.setText("Scrivere una matricola valida");
+    		return;
     	}
     	Corso corso=this.model.getCorso(this.ComboBox.getValue());
     	if(studente==null) {
-    		this.txtRisultato.setText("Scrivere una matricola valida");
+    		this.txtRisultato.setText("Studente non presente nel database");
     	}
     	if(corso==null) {
     		this.txtRisultato.setText("Seleziona un corso");

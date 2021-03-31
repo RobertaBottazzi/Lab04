@@ -48,7 +48,12 @@ public class Model {
 		}
 		return corsi;
 	}
-	
+	/**
+	 * Data la matricola di uno studente verifica che questo sia presente nel Database 
+	 * e in tal caso lo restituisce
+	 * @param matricola
+	 * @return
+	 */
 	public Studente getStudente(int matricola) {
 		Studente studente=null;
 		for(Studente s: studenteDao.getTuttiGliStudenti()) {
@@ -56,5 +61,23 @@ public class Model {
 				studente=s;
 		}
 		return studente;
+	}
+	/**
+	 * Dato il nome di uno corso verifica che questo sia presente nel Database 
+	 * e in tal caso lo restituisce
+	 * @param nome
+	 * @return
+	 */
+	public Corso getCorso(String nome) {
+		Corso corso=null;
+		for(Corso c: corsoDao.getTuttiICorsi()) {
+			if(c.getNome().equals(nome))
+				corso=c;
+		}
+		return corso;
+	}
+	
+	public boolean inscriviStudenteACorso(Studente studente, Corso corso) {
+		return corsoDao.inscriviStudenteACorso(studente, corso);		
 	}
 }

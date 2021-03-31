@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
@@ -94,8 +95,19 @@ public class CorsoDAO {
 	/*
 	 * Data una matricola ed il codice insegnamento, iscrivi lo studente al corso.
 	 */
-	public boolean inscriviStudenteACorso(Studente studente, Corso corso) {
-		// TODO
+	public boolean inscriviStudenteACorso(Studente studente, Corso corso) {		 
+		try {
+			Connection conn= ConnectDB.getConnection();
+			Statement st= conn.createStatement();
+			st.executeUpdate("INSERT INTO iscrizione "+
+					"VALUES ("+studente.getMatricola()+", '"+corso.getCodins()+"')");
+			conn.close();
+			return true;
+			
+		}  catch (Exception e) { 
+            System.err.println("Got an exception! "); 
+            System.err.println(e.getMessage()); 
+        } 
 		// ritorna true se l'iscrizione e' avvenuta con successo
 		return false;
 	}

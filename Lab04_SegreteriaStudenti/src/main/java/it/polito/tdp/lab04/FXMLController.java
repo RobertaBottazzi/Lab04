@@ -49,15 +49,31 @@ public class FXMLController {
 
     @FXML
     void doCercaCorsi(ActionEvent event) {
-    	int matricola=Integer.parseInt(this.txtMatricola.getText());
-    	Studente studente=this.model.getStudente(matricola);
-    	List<Corso> corsi= new ArrayList<>();
+    	int matricola;
+    	Studente studente = null;
+    	List<Corso> corsi = null;
+    	try{
+    		matricola=Integer.parseInt(this.txtMatricola.getText());
+    		studente=this.model.getStudente(matricola);
+    		corsi= new ArrayList<>();
+    	} catch (NumberFormatException e) {
+    		this.txtRisultato.setText("Selezionare uno studente valido"); //CONTROLLARE
+    	}
+    	
     	if(studente!=null)
-    		corsi.addAll(this.model.getCorsiIscrittoStudente(studente));  
+    		corsi.addAll(this.model.getCorsiIscrittoStudente(studente));    		
     	else {
     		this.txtRisultato.setText("Studente non presente nel database");
     		return;
     	}
+    	
+    	if((!this.ComboBox.getValue().isBlank() || this.ComboBox.getValue()!=null) && !this.txtMatricola.getText().isEmpty()){
+    		if(cerca(this.txtMatricola.getText(),this.ComboBox.getValue())) {
+    				this.txtRisultato.setText("Studente iscritto al corso");
+    				return;    				
+    		}
+    	}
+    	
     	for(Corso c: corsi) {
     		this.txtRisultato.appendText(c.toString());
     	}
@@ -70,16 +86,26 @@ public class FXMLController {
     	if(this.ComboBox.getValue().equals("")) {
     		this.txtRisultato.setText("Seleziona un corso");
     		return;
-    	}
-    		
+    	}	
     	for(Corso c: this.model.getTuttiICorsi()) {
     		if(this.ComboBox.getValue().equals(c.getNome()))
     			corso=c;    			
     	}
-    	studentiIscrittiAlCorso.addAll(this.model.getStudentiIscrittiAlCorso(corso));
-    	for(Studente s: studentiIscrittiAlCorso) {
-    		this.txtRisultato.appendText(s.toString());
+    	if(corso!=null)
+    		studentiIscrittiAlCorso.addAll(this.model.getStudentiIscrittiAlCorso(corso));
+    	else
+    		this.txtRisultato.setText("Selezionare un corso");
+    	
+    	if((!this.ComboBox.getValue().isBlank() || this.ComboBox.getValue()!=null) && !this.txtMatricola.getText().isEmpty()){
+    		if(cerca(this.txtMatricola.getText(),this.ComboBox.getValue())) {
+    				this.txtRisultato.setText("Studente iscritto al corso");
+    				return;    				
+    		}    			       			    			    		
     	}
+    	
+    	for(Studente s: studentiIscrittiAlCorso) {    			
+    		this.txtRisultato.appendText(s.toString());
+    	}    	
     }
 
     @FXML
@@ -95,7 +121,30 @@ public class FXMLController {
 
     @FXML
     void doIscrivi(ActionEvent event) {
-
+    	Studente studente = null;
+    	try{
+    		studente=this.model.getStudente(Integer.parseInt(this.txtMatricola.getText()));    		
+    	} catch (NumberFormatException e) {
+    		this.txtRisultato.setText("Selezionare uno studente valido");
+    	}
+    	Corso corso=this.model.getCorso(this.ComboBox.getValue());
+    	if(studente==null) {
+    		this.txtRisultato.setText("Scrivere una matricola valida");
+    	}
+    	if(corso==null) {
+    		this.txtRisultato.setText("Seleziona un corso");
+    		return;
+    	}
+    	if((!this.ComboBox.getValue().isBlank() || this.ComboBox.getValue()!=null) && !this.txtMatricola.getText().isEmpty()){
+    		if(cerca(this.txtMatricola.getText(),this.ComboBox.getValue())) {
+    				this.txtRisultato.setText("Studente iscritto al corso");
+    				return;    				
+    		}    			       			    			    		
+    	}
+    	
+    	if(this.model.inscriviStudenteACorso(studente, corso))
+    		this.txtRisultato.setText("Studente iscritto correttamente");
+    	
     }
     /**
      * permette di cancellare il contenuto di tutti i campi
@@ -107,9 +156,21 @@ public class FXMLController {
     	this.txtMatricola.clear();
     	this.txtCognome.clear();
     	this.txtNome.clear();
-
+    	this.ComboBox.setValue("Corsi");
     }
-    
+    /**
+     * Cerca se uno studente è già iscritto ad un corso
+     */
+    public boolean cerca(String txtMatricola, String boxValue) {
+    	Studente studente=this.model.getStudente(Integer.parseInt(txtMatricola));
+    	Corso corso=this.model.getCorso(boxValue);
+    	if(studente!=null && corso!=null) {
+    		List<Studente> studenti=this.model.getStudentiIscrittiAlCorso(corso); 
+    		if(studenti.contains(studente))
+    			return true;
+    	}    	
+    	return false;
+    }
     public void setModel(Model model) {
     	this.model= new Model();
     	this.ComboBox.setValue("Corsi");
